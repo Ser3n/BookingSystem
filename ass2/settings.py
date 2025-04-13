@@ -54,7 +54,7 @@ ROOT_URLCONF = 'ass2.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR/ 'ass2' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
