@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Booking Details</title>
+  </head>
+  <body>
+    <h1>Enter Booking Details</h1>
+    
+    <h3>Passenger Information</h3>
+    
+    <form action="" id="bookingForm">
+      <p>Full Name: <input type="text" name="fullName" size="30" placeholder="Enter your full name"/></p>
+      <p>Email: <input type="email" name="email" size="30" placeholder="Enter your email"/></p>
+      <p>Phone: <input type="tel" name="phone" size="20" placeholder="Enter your phone number"/></p>
+      
+      <h3>Flight Information</h3>
+      <p>Flight Number: <input type="text" name="flightNumber" size="10" readonly value="{{ flight.flight_number }}"/></p>
+      <p>From: <input type="text" name="origin" size="30" readonly value="{{ flight.origin.name }}"/></p>
+      <p>To: <input type="text" name="destination" size="30" readonly value="{{ flight.destination.name }}"/></p>
+      <p>Date: <input type="text" name="date" size="20" readonly value="{{ flight.departure_time|date:'d M Y' }}"/></p>
+      <p>Time: <input type="text" name="time" size="10" readonly value="{{ flight.departure_time|time:'H:i' }}"/></p>
+      <p>Price: <input type="text" name="price" size="10" readonly value="${{ flight.price }}"/></p>
+      
+      {% csrf_token %}
+    </form>
+    
+    <p><button onclick="submitBooking()">Confirm Booking</button></p>
+    <p id="bookingResult"></p>
+    
+    <script>
+      // Send using fetch API
+      async function submitBooking() {
+          // Validate form first
+          const form = document.getElementById('bookingForm');
+          if (!form.fullName.value || !form.email.value || !form.phone.value) {
+              document.getElementById("bookingResult").innerHTML = 
+                  '<span style="color: red;">Please fill in all required fields</span>';
+              return;
+          }
+          
+          // Prepare form data
+          const formData = new FormData(form);
+          
+          try {
+              // Send booking request
+              const response = await fetch('/airline/book-flight/', {
+                  method: 'POST',
+                  body: formData
+              });
+              
+              // Parse the response
+              const result = await response.json();
+              
+              if (response.ok) {
+                  // Success - show booking confirmation
+                  document.getElementById("bookingResult").innerHTML = 
+                      `<div style="color: green;">
+                          <h3>Booking Confirmed!</h3>
+                          <p>Your booking reference is: <strong>${result.reference}</strong></p>
+                          <p>Please save this reference for future inquiries.</p>
+                      </div>`;
+              } else {
+                  // Error - show the error message
+                  document.getElementById("bookingResult").innerHTML = 
+                      `<div style="color: red;">
+                          <p>Error: ${result.error}</p>
+                      </div>`;
+              }
+          } catch (error) {
+              // Network or other error
+              document.getElementById("bookingResult").innerHTML = 
+                  `<div style="color: red;">
+                      <p>Sorry, an error occurred: ${error.message}</p>
+                  </div>`;
+          }
+      }
+    </script>
+  </body>
+</html>
