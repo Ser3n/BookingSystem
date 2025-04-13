@@ -1,0 +1,34 @@
+# Documentation
+assignment2.pdf
+url_references.txt
+commands.txt
+
+# Virtual Environment
+.venv/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pot
+*.pyc
+migrations/__pycache__/
+static/admin/
+staticfiles/
+
+# IDE
+.vscode/
+.idea/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+
