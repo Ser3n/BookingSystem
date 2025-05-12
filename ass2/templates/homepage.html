@@ -1,44 +1,89 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title> Dairy Flats Homepage</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <header>
-            <div class="header">
-                <h1>W</h1>
-                <nav>
-                    <ul>
-                        <li><a href="/home">Home</a></li>
-                        <li><a href="/about">About</a></li>
-                        <li><a href="/Flights">Products</a></li>
-                        <li><a href="/contact">Contact</a></li>
-                    </ul>
-                </nav>
-            </div>
+{% extends 'master.html' %}
 
-            {{ name }}! Hello, and welcome back to Dairy Flats !<br>
-        
-        <script src="" async defer></script>
-    </body>
-<footer>
+{% block title %}Dairy Flat Airways - New Zealand's Premium Regional Airline{% endblock %}
 
-    <div class="footer">
-        <p>Copyright &copy; 2025 Dairy Flats. All rights reserved. Zak Turner Assignment 2</p>
+{% block hero %}
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4">Explore New Zealand</h1>
+        <p class="lead">Fly in luxury to breathtaking locations from our Dairy Flat hub</p>
+        <a href="{% url 'flight_search' %}" class="btn btn-primary btn-lg mt-3">Book Now</a>
     </div>
+</div>
+{% endblock %}
 
-</footer>
-     
-</html>
+{% block content %}
+<div class="row mb-5">
+    <div class="col-12 text-center">
+        <h2>Our Premium Destinations</h2>
+        <p class="lead">Experience New Zealand and beyond with our specialized routes</p>
+    </div>
+</div>
+{% load static %}
+<div class="row">
+    <!-- Melbourne Route -->
+    <div class="col-md-4">
+        <div class="card h-100">
+            <img src="{% static 'images/melb.jpg' %}" height="250" class="card-img-top" alt="Melbourne">
+            <div class="card-body">
+                <h5 class="card-title">Melbourne</h5>
+                <p class="card-text">Our weekly prestige service to Melbourne. Departs Dairy Flat every Friday morning with return flights on Sunday.</p>
+                <a href="{% url 'flight_search' %}?destination=YMML" class="btn btn-outline-primary">Check Availability</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Rotorua Route -->
+    <div class="col-md-4">
+        <div class="card h-100">
+            <img src="{% static 'images/roto.jpg' %}" height="250" class="card-img-top" alt="Rotorua">
+            <div class="card-body">
+                <h5 class="card-title">Rotorua</h5>
+                <p class="card-text">Daily shuttle service to Rotorua. Morning and afternoon flights available every weekday.</p>
+                <a href="{% url 'flight_search' %}?destination=NZRO" class="btn btn-outline-primary">Check Availability</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Great Barrier Island Route -->
+    <div class="col-md-4">
+        <div class="card h-100">
+            <img src="{% static 'images/greatb.jpg' %}" height="250" class="card-img-top" alt="Great Barrier Island">
+            <div class="card-body">
+                <h5 class="card-title">Great Barrier Island</h5>
+                <p class="card-text">Three weekly flights to Great Barrier Island. Departs Monday, Wednesday and Friday.</p>
+                <a href="{% url 'flight_search' %}?destination=NZGB" class="btn btn-outline-primary">Check Availability</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <!-- Chatham Islands Route -->
+    <div class="col-md-6">
+        <div class="card h-100">
+            <img src="{% static 'images/chath.jpg' %}" height="250" class="card-img-top" alt="Chatham Islands">
+            <div class="card-body">
+                <h5 class="card-title">Chatham Islands</h5>
+                <p class="card-text">Twice weekly service to Tuuta Airport in the Chatham Islands. Departs Tuesday and Friday.</p>
+                <a href="{% url 'flight_search' %}?destination=NZCI" class="btn btn-outline-primary">Check Availability</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Lake Tekapo Route -->
+    <div class="col-md-6">
+        <div class="card h-100">
+            <img src="{% static 'images/tekapo.jpg' %}" height="250" class="card-img-top" alt="Lake Tekapo">
+            <div class="card-body">
+                <h5 class="card-title">Lake Tekapo</h5>
+                <p class="card-text">Weekly scenic flight to Lake Tekapo. Departs Monday with return flights on Tuesday.</p>
+                <a href="{% url 'flight_search' %}?destination=NZTL" class="btn btn-outline-primary">Check Availability</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+    

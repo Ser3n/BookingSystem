@@ -1,0 +1,242 @@
+{% extends 'master.html' %}
+
+
+{% load static %}
+
+{% block title %}Find Flights - Dairy Flat Airways{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>Find Your Flight</h1>
+        <p class="lead">Search for flights to our unique destinations</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Flight Search</h4>
+            </div>
+            <div class="card-body">
+                <form method="get" action="{% url 'flight_search' %}">
+                    <div class="mb-3">
+                        <label for="origin" class="form-label">From</label>
+                        <select name="origin" id="origin" class="form-select">
+                            <!-- Default is Dairy Flat for outbound flights -->
+                            <option value="NZNE" {% if origin == "NZNE" %}selected{% endif %}>Dairy Flat (NZNE)</option>
+                            
+                            <!-- For return flights or other combinations -->
+                            <option value="YMML" {% if origin == "YMML" %}selected{% endif %}>Melbourne (YMML)</option>
+                            <option value="NZRO" {% if origin == "NZRO" %}selected{% endif %}>Rotorua (NZRO)</option>
+                            <option value="NZGB" {% if origin == "NZGB" %}selected{% endif %}>Great Barrier Island (NZGB)</option>
+                            <option value="NZCI" {% if origin == "NZCI" %}selected{% endif %}>Chatham Islands (NZCI)</option>
+                            <option value="NZTL" {% if origin == "NZTL" %}selected{% endif %}>Lake Tekapo (NZTL)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="destination" class="form-label">To</label>
+                        <select name="destination" id="destination" class="form-select">
+                            <option value="">-- Select Destination --</option>
+                            <option value="NZNE" {% if destination == "NZNE" %}selected{% endif %}>Dairy Flat (NZNE)</option>
+                            <option value="YMML" {% if destination == "YMML" %}selected{% endif %}>Melbourne (YMML)</option>
+                            <option value="NZRO" {% if destination == "NZRO" %}selected{% endif %}>Rotorua (NZRO)</option>
+                            <option value="NZGB" {% if destination == "NZGB" %}selected{% endif %}>Great Barrier Island (NZGB)</option>
+                            <option value="NZCI" {% if destination == "NZCI" %}selected{% endif %}>Chatham Islands (NZCI)</option>
+                            <option value="NZTL" {% if destination == "NZTL" %}selected{% endif %}>Lake Tekapo (NZTL)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="departure_date" class="form-label">Departure Date</label>
+                        <input type="date" name="departure_date" id="departure_date" class="form-control" value="{{ departure_date|date:'Y-m-d' }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="passengers" class="form-label">Passengers</label>
+                        <select name="passengers" id="passengers" class="form-select">
+                            <option value="1" {% if passengers == 1 %}selected{% endif %}>1</option>
+                            <option value="2" {% if passengers == 2 %}selected{% endif %}>2</option>
+                            <option value="3" {% if passengers == 3 %}selected{% endif %}>3</option>
+                            <option value="4" {% if passengers == 4 %}selected{% endif %}>4</option>
+                            <option value="5" {% if passengers == 5 %}selected{% endif %}>5</option>
+                            <option value="6" {% if passengers == 6 %}selected{% endif %}>6</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary w-100">Search Flights</button>
+                    {% comment %} <button type="button" class="btn btn-primary w-100" onclick="showAllFlights()">View All</button> {% endcomment %}
+                </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Route Information</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Melbourne
+                        <span class="badge bg-primary rounded-pill">Weekly</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Rotorua
+                        <span class="badge bg-primary rounded-pill">Daily (Weekdays)</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Great Barrier Island
+                        <span class="badge bg-primary rounded-pill">3x Weekly</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Chatham Islands
+                        <span class="badge bg-primary rounded-pill">2x Weekly</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Lake Tekapo
+                        <span class="badge bg-primary rounded-pill">Weekly</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        {% if flights %}
+            <h2>Available Flights</h2>
+            {% if search_params %}
+                <p>Showing flights from {{ search_params.origin_name }} to {{ search_params.destination_name }} on {{ search_params.departure_date|date:"l, F j, Y" }}.</p>
+            {% endif %}
+            
+            {% for flight in flights %}
+                <div class="card mb-3 flight-card">
+                    <div class="card-header {% if flight.is_full %}bg-danger text-white{% else %}bg-success text-white{% endif %}">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Flight {{ flight.flight_number }}</h5>
+                            <span>{{ flight.available_seats }} seats available</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="me-4">
+                                        <p class="mb-0 fw-bold">{{ flight.flight_departure_time|date:"H:i" }}</p>
+                                        <p class="mb-0">{{ flight.flight_origin.airport_code }}</p>
+                                    </div>
+                                    <div class="flex-grow-1 text-center">
+                                        <p class="mb-0 text-muted">{{ flight.duration }}</p>
+                                        <hr>
+                                        <p class="mb-0 text-muted">{{ flight.flight_aircraft.craft_type }}</p>
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="mb-0 fw-bold">{{ flight.flight_arrival_time|date:"H:i" }}</p>
+                                        <p class="mb-0">{{ flight.flight_destination.airport_code }}</p>
+                                    </div>
+                                </div>
+                                
+                                <p class="mb-0">
+                                    <strong>Date:</strong> {{ flight.flight_departure_time|date:"l, F j, Y" }}
+                                </p>
+                                <p class="mb-0">
+                                    <strong>From:</strong> {{ flight.flight_origin.airport_name }}
+                                </p>
+                                <p class="mb-0">
+                                    <strong>To:</strong> {{ flight.flight_destination.airport_name }}
+                                </p>
+                                <p class="mb-0">
+                                    <strong>Aircraft:</strong> {{ flight.flight_aircraft.craft_type }} ({{ flight.flight_aircraft.craft_capacity }} seats)
+                                </p>
+                            </div>
+                            <div class="col-md-4 text-center d-flex flex-column justify-content-center">
+                                <p class="h3 text-primary mb-3">${{ flight.flight_price }}</p>
+                                <p class="text-muted mb-3">per person</p>
+                                
+                                {% if flight.is_bookable %}
+                                    <a href="{% url 'booking_create' flight_id=flight.id %}" class="btn btn-primary">Book Now</a>
+                                {% else %}
+                                    <button class="btn btn-secondary" disabled>Not Available</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+            {% if flights.has_other_pages %}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if flights.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ flights.previous_page_number }}">Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                            </li>
+                        {% endif %}
+                        
+                        {% for i in flights.paginator.page_range %}
+                            {% if flights.number == i %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ i }} <span class="sr-only">(current)</span></span>
+                                </li>
+                            {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ i }}">{{ i }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if flights.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ flights.next_page_number }}">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% elif search_performed %}
+            <div class="alert alert-info">
+                <h3>No Flights Found</h3>
+                <p>We couldn't find any flights matching your search criteria. Please try different dates or destinations.</p>
+                
+                <h4 class="mt-4">Suggestions:</h4>
+                <ul>
+                    <li>Melbourne flights operate on Fridays (outbound) and Sundays (return)</li>
+                    <li>Rotorua flights operate twice daily on weekdays</li>
+                    <li>Great Barrier Island flights operate Monday, Wednesday, Friday (outbound) and Tuesday, Thursday, Saturday (return)</li>
+                    <li>Chatham Islands flights operate Tuesday, Friday (outbound) and Wednesday, Saturday (return)</li>
+                    <li>Lake Tekapo flights operate Monday (outbound) and Tuesday (return)</li>
+                </ul>
+            </div>
+        {% else %}
+            <div class="alert alert-secondary">
+                <h3>Search for Available Flights</h3>
+                <p>Use the search form to find flights to your desired destination.</p>
+                
+                <h4 class="mt-4">Our Routes:</h4>
+                <ul>
+                    <li><strong>Melbourne:</strong> Weekly prestige service on our SyberJet SJ30i</li>
+                    <li><strong>Rotorua:</strong> Daily shuttle service on weekdays with our Cirrus SF50</li>
+                    <li><strong>Great Barrier Island:</strong> Three times weekly service with our Cirrus SF50</li>
+                    <li><strong>Chatham Islands:</strong> Twice weekly service with our HondaJet Elite</li>
+                    <li><strong>Lake Tekapo:</strong> Weekly service with our HondaJet Elite</li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/flightsearch.js' %}"></script>
+{% endblock %}
+

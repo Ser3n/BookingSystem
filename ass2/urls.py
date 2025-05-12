@@ -20,7 +20,16 @@ from ass2 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('hello', views.hello, name='hello'),
+    
+    # Main site routes
     path('', views.homepage, name='homepage'),
-    path('formjs', views.formjs, name='formjs'),
+    path('about/', views.about, name='about'),
+    
+    # Flight search and booking
+    path('flights/', views.flight_search, name='flight_search'),
+    path('booking/create/<int:flight_id>/', views.booking_create, name='booking_create'),
+    path('booking/confirmation/<int:booking_id>/', views.booking_confirmation, name='booking_confirmation'),
+    path('booking/lookup/', views.booking_lookup, name='booking_lookup'),
+    path('booking/cancel/<int:booking_id>/', views.booking_cancel, name='booking_cancel'),
+    
 ]

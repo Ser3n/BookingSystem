@@ -1,0 +1,168 @@
+{% extends 'master.html' %}
+
+{% block title %}Manage Your Booking - Dairy Flat Airways{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h1>Manage Your Booking</h1>
+        <p class="lead">Retrieve your booking details and make changes if needed</p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Booking Lookup</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'booking_lookup' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="booking_id" class="form-label">Booking Reference</label>
+                        <input type="text" name="booking_id" id="booking_id" class="form-control" {% if booking_id %}value="{{ booking_id }}"{% endif %} required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" name="email" id="email" class="form-control" {% if email %}value="{{ email }}"{% endif %} required>
+                        <div class="form-text">Please enter the email address used when making the booking.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Find My Booking</button>
+                </form>
+            </div>
+        </div>
+        
+        {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+            {{ error_message }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if booking %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Booking Reference: {{ booking.id }}</h4>
+                    <span class="badge bg-light text-dark">{{ booking.booking_status }}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5>Flight Details</h5>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="me-4">
+                                        <p class="mb-0 fw-bold">{{ booking.booking_flight.flight_departure_time|date:"H:i" }}</p>
+                                        <p class="mb-0">{{ booking.booking_flight.flight_origin.airport_code }}</p>
+                                    </div>
+                                    <div class="flex-grow-1 text-center">
+                                        <p class="mb-0 text-muted">{{ booking.booking_flight.duration }}</p>
+                                        <hr>
+                                        <p class="mb-0 text-muted">{{ booking.booking_flight.flight_aircraft.craft_type }}</p>
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="mb-0 fw-bold">{{ booking.booking_flight.flight_arrival_time|date:"H:i" }}</p>
+                                        <p class="mb-0">{{ booking.booking_flight.flight_destination.airport_code }}</p>
+                                    </div>
+                                </div>
+                                
+                                <dl class="row">
+                                    <dt class="col-sm-4">Flight Number:</dt>
+                                    <dd class="col-sm-8">{{ booking.booking_flight.flight_number }}</dd>
+                                    
+                                    <dt class="col-sm-4">Date:</dt>
+                                    <dd class="col-sm-8">{{ booking.booking_flight.flight_departure_time|date:"l, F j, Y" }}</dd>
+                                    
+                                    <dt class="col-sm-4">From:</dt>
+                                    <dd class="col-sm-8">{{ booking.booking_flight.flight_origin.airport_name }}</dd>
+                                    
+                                    <dt class="col-sm-4">To:</dt>
+                                    <dd class="col-sm-8">{{ booking.booking_flight.flight_destination.airport_name }}</dd>
+                                    
+                                    <dt class="col-sm-4">Aircraft:</dt>
+                                    <dd class="col-sm-8">{{ booking.booking_flight.flight_aircraft.craft_type }}</dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-4 text-center d-flex flex-column justify-content-center">
+                                <span class="badge {% if booking.booking_status == 'Confirmed' %}bg-success{% elif booking.booking_status == 'Cancelled' %}bg-danger{% else %}bg-warning{% endif %} mb-2 p-2">{{ booking.booking_status }}</span>
+                                <p class="h4 text-primary">${{ booking.booking_flight.flight_price }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h5>Passenger Information</h5>
+                <table class="table">
+                    <tr>
+                        <th>Name:</th>
+                        <td>{{ booking.booking_customer.customer_first_name }} {{ booking.booking_customer.customer_last_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>{{ booking.booking_customer.customer_email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Phone:</th>
+                        <td>{{ booking.booking_customer.customer_phone }}</td>
+                    </tr>
+                    {% if booking.booking_requests %}
+                    <tr>
+                        <th>Special Requests:</th>
+                        <td>{{ booking.booking_requests }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+                
+                {% if booking.booking_status == 'Confirmed' %}
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="#" class="btn btn-outline-primary" onclick="window.print();">Print Confirmation</a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel Booking</button>
+                    </div>
+                {% elif booking.booking_status == 'Cancelled' %}
+                    <div class="alert alert-warning mt-4">
+                        <h5>Booking Cancelled</h5>
+                        <p>This booking has been cancelled. If you wish to book another flight, please visit our <a href="{% url 'flight_search' %}">flight search page</a>.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Booking Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Cancel Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel your booking?</p>
+                <p><strong>Cancellation Policy:</strong></p>
+                <ul>
+                    <li>Cancellations made more than 48 hours before departure may be eligible for a partial refund.</li>
+                    <li>Cancellations within 48 hours of departure are non-refundable.</li>
+                </ul>
+                
+                <p class="text-danger">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep My Booking</button>
+                <form method="post" action="{% url 'booking_cancel' booking_id=booking.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Cancel Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

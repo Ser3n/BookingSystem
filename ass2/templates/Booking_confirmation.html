@@ -1,0 +1,119 @@
+{% extends 'master.html' %}
+
+{% block title %}Booking Confirmation - Dairy Flat Airways{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12 text-center">
+        <h1>Booking Confirmation</h1>
+        <p class="lead">Your booking has been confirmed</p>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Booking Reference: {{ booking.id }}</h4>
+            </div>
+            <div class="card-body">
+                <p>Thank you for booking with Dairy Flat Airways. We've sent a confirmation email to <strong>{{ booking.booking_customer.customer_email }}</strong> with all the details of your booking.</p>
+                
+                <div class="alert alert-info mt-3">
+                    <h5>Important Information</h5>
+                    <p>Please arrive at the airport at least 45 minutes before your scheduled departure time. Be sure to bring a valid photo ID for check-in.</p>
+                </div>
+                
+                <h5 class="mt-4">Flight Details</h5>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="me-4">
+                                        <p class="mb-0 fw-bold">{{ booking.booking_flight.flight_departure_time|date:"H:i" }}</p>
+                                        <p class="mb-0">{{ booking.booking_flight.flight_origin.airport_code }}</p>
+                                    </div>
+                                    <div class="flex-grow-1 text-center">
+                                        <p class="mb-0 text-muted">{{ booking.booking_flight.duration }}</p>
+                                        <hr>
+                                        <p class="mb-0 text-muted">{{ booking.booking_flight.flight_aircraft.craft_type }}</p>
+                                    </div>
+                                    <div class="ms-4">
+                                        <p class="mb-0 fw-bold">{{ booking.booking_flight.flight_arrival_time|date:"H:i" }}</p>
+                                        <p class="mb-0">{{ booking.booking_flight.flight_destination.airport_code }}</p>
+                                    </div>
+                                </div>
+                                
+                                <dl class="row">
+                                    <dt class="col-sm-4">Flight Number:</dt>
+                                    <dd class="col-sm-8">{{ booking.booking_flight.flight_number }}</dd>
+                                    
+                                    <dt class="col-sm-4">Date:</dt>
+                                    <dd class="col-sm-8">{{ booking.booking_flight.flight_departure_time|date:"l, F j, Y" }}</dd>
+                                    
+                                    <dt class="col-sm-4">From:</dt>
+                                    <dd class="col-sm-8">{{ booking.booking_flight.flight_origin.airport_name }}</dd>
+                                    
+                                    <dt class="col-sm-4">To:</dt>
+                                    <dd class="col-sm-8">{{ booking.booking_flight.flight_destination.airport_name }}</dd>
+                                    
+                                    <dt class="col-sm-4">Aircraft:</dt>
+                                    <dd class="col-sm-8">{{ booking.booking_flight.flight_aircraft.craft_type }}</dd>
+                                </dl>
+                            </div>
+                            <div class="col-md-4 text-center d-flex flex-column justify-content-center">
+                                <span class="badge bg-success mb-2 p-2">Confirmed</span>
+                                <p class="h4 text-primary">${{ booking.booking_flight.flight_price }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h5>Passenger Information</h5>
+                <table class="table">
+                    <tr>
+                        <th>Name:</th>
+                        <td>{{ booking.booking_customer.customer_first_name }} {{ booking.booking_customer.customer_last_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email:</th>
+                        <td>{{ booking.booking_customer.customer_email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Phone:</th>
+                        <td>{{ booking.booking_customer.customer_phone }}</td>
+                    </tr>
+                    {% if booking.booking_requests %}
+                    <tr>
+                        <th>Special Requests:</th>
+                        <td>{{ booking.booking_requests }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+                
+                <h5>Payment Information</h5>
+                <table class="table mb-4">
+                    <tr>
+                        <th>Amount Paid:</th>
+                        <td>${{ payment.payment_amount }}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Date:</th>
+                        <td>{{ payment.payment_date|date:"F j, Y, g:i a" }}</td>
+                    </tr>
+                    <tr>
+                        <th>Payment Status:</th>
+                        <td><span class="badge bg-success">{{ payment.payment_status }}</span></td>
+                    </tr>
+                </table>
+                
+                <div class="text-center mt-4">
+                    <a href="{% url 'homepage' %}" class="btn btn-primary me-2">Return to Home</a>
+                    <a href="#" class="btn btn-outline-primary" onclick="window.print();">Print Confirmation</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,194 @@
+{% extends 'master.html' %}
+
+{% block title %}Book Your Flight - Dairy Flat Airways{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>Complete Your Booking</h1>
+        <p class="lead">Please provide your details to book your flight</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Passenger Information</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'booking_create' flight_id=flight.id %}">
+                    {% csrf_token %}
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="customer_first_name" class="form-label">First Name</label>
+                            <input type="text" name="customer_first_name" id="customer_first_name" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="customer_last_name" class="form-label">Last Name</label>
+                            <input type="text" name="customer_last_name" id="customer_last_name" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="customer_email" class="form-label">Email Address</label>
+                        <input type="email" name="customer_email" id="customer_email" class="form-control" required>
+                        <div class="form-text">We'll send your booking confirmation to this email.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="customer_phone" class="form-label">Phone Number</label>
+                        <input type="tel" name="customer_phone" id="customer_phone" class="form-control" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="booking_requests" class="form-label">Special Requests (Optional)</label>
+                        <textarea name="booking_requests" id="booking_requests" class="form-control" rows="3"></textarea>
+                        <div class="form-text">Let us know if you have any special dietary requirements or other requests.</div>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="terms" required>
+                        <label class="form-check-label" for="terms">I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a></label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-5">
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Flight Details</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-5">Flight Number:</dt>
+                    <dd class="col-sm-7">{{ flight.flight_number }}</dd>
+                    
+                    <dt class="col-sm-5">Date:</dt>
+                    <dd class="col-sm-7">{{ flight.flight_departure_time|date:"l, F j, Y" }}</dd>
+                    
+                    <dt class="col-sm-5">Departure:</dt>
+                    <dd class="col-sm-7">
+                        {{ flight.flight_departure_time|date:"H:i" }}
+                        <small class="text-muted">({{ flight.flight_origin.airport_timezone }})</small>
+                    </dd>
+                    
+                    <dt class="col-sm-5">Arrival:</dt>
+                    <dd class="col-sm-7">
+                        {{ flight.flight_arrival_time|date:"H:i" }}
+                        <small class="text-muted">({{ flight.flight_destination.airport_timezone }})</small>
+                    </dd>
+                    
+                    <dt class="col-sm-5">From:</dt>
+                    <dd class="col-sm-7">{{ flight.flight_origin.airport_name }}</dd>
+                    
+                    <dt class="col-sm-5">To:</dt>
+                    <dd class="col-sm-7">{{ flight.flight_destination.airport_name }}</dd>
+                    
+                    <dt class="col-sm-5">Aircraft:</dt>
+                    <dd class="col-sm-7">{{ flight.flight_aircraft.craft_type }}</dd>
+                    
+                    <dt class="col-sm-5">Available Seats:</dt>
+                    <dd class="col-sm-7">{{ flight.available_seats }} / {{ flight.flight_aircraft.craft_capacity }}</dd>
+                </dl>
+                
+                <hr>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong>Price per Passenger:</strong>
+                    <span class="h5 mb-0">${{ flight.flight_price }}</span>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <strong>Service Fee:</strong>
+                    <span>${{ service_fee }}</span>
+                </div>
+                
+                <hr>
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong class="h5 mb-0">Total:</strong>
+                    <span class="h5 mb-0">${{ total_price }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Need Assistance?</h5>
+                <p>If you need help with your booking, contact our customer service team:</p>
+                <p><strong>Phone:</strong> +64 9 123 4567</p>
+                <p><strong>Email:</strong> bookings@dairyflatairways.co.nz</p>
+                <p><strong>Hours:</strong> Monday-Friday, 9am-5pm</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms and Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>Booking Terms</h6>
+                <p>By booking a flight with Dairy Flat Airways, you agree to the following terms and conditions:</p>
+                <ul>
+                    <li>All bookings are subject to availability.</li>
+                    <li>Fares are non-refundable unless otherwise specified.</li>
+                    <li>Changes to bookings may incur a fee.</li>
+                    <li>Passengers must arrive at the airport at least 45 minutes before departure time.</li>
+                    <li>All passengers must carry valid identification.</li>
+                    <li>Baggage allowance is limited to 15kg per passenger.</li>
+                    <li>The airline reserves the right to cancel or reschedule flights due to weather conditions or operational requirements.</li>
+                </ul>
+                
+                <h6>Payment</h6>
+                <p>Payment is required in full at the time of booking. We accept all major credit cards.</p>
+                
+                <h6>Cancellations and Refunds</h6>
+                <p>Cancellations made more than 48 hours before departure may be eligible for a partial refund or credit for future travel. Cancellations within 48 hours of departure are non-refundable.</p>
+                
+                <h6>Privacy Policy</h6>
+                <p>Dairy Flat Airways collects personal information for the purpose of processing bookings and providing services. We respect your privacy and will not share your information with third parties except as required for processing your booking or as required by law.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Enable form validation
+    (function() {
+        'use strict'
+        
+        // Fetch all forms we want to apply validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+        
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+{% endblock %}

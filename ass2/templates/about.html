@@ -1,0 +1,169 @@
+{% extends 'master.html' %}
+
+{% block title %}About Us - Dairy Flat Airways{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-12 text-center">
+        <h1>About Dairy Flat Airways</h1>
+        <p class="lead">New Zealand's premier boutique airline offering unique regional routes</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-6">
+        <h2>Our Story</h2>
+        <p>Founded in 2023, Dairy Flat Airways was born from a vision to connect New Zealand's most beautiful destinations with comfortable, efficient air travel. Based at Dairy Flat Airport just north of Auckland, we operate a fleet of modern light jets providing exclusive service to select destinations.</p>
+        
+        <p>Our commitment to excellence extends beyond just getting you from point A to point B. We strive to make each journey memorable, comfortable, and uniquely Kiwi.</p>
+        
+        <h2 class="mt-4">Our Fleet</h2>
+        <p>We take pride in our carefully selected fleet of modern aircraft, chosen for their efficiency, comfort, and environmental performance.</p>
+        
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+               
+                <p class="lead">Fly in comfort with our modern aircraft</p>
+            </div>
+        </div>
+        {% load static %}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{% static 'images/sj30i.jpg' %}" height = "100" class="card-img-top" alt="SyberJet SJ30i">
+                    <div class="card-body">
+                        <h5 class="card-title">SyberJet SJ30i</h5>
+                        <p class="card-text">Our flagship aircraft featuring 6 luxury seats. Used for our prestige Melbourne service.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{% static 'images/sf50.jpg' %}" height = "100" class="card-img-top" alt="Cirrus SF50">
+                    <div class="card-body">
+                        <h5 class="card-title">Cirrus SF50</h5>
+                        <p class="card-text">Compact and efficient 4-seater jet used for our Rotorua shuttle and Great Barrier Island service.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{% static 'images/hondajet.jpg' %}" height = "100" class="card-img-top" alt="HondaJet Elite">
+                    <div class="card-body">
+                        <h5 class="card-title">HondaJet Elite</h5>
+                        <p class="card-text">Modern 5-seater jet offering comfort and efficiency on our Chatham Islands and Lake Tekapo routes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        
+        <img src="{% static 'images/airport.jpg' %}" class="img-fluid rounded" alt="Airport">
+        <div class="card mt-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Safety First</h4>
+            </div>
+            <div class="card-body">
+                <p>At Dairy Flat Airways, safety is our absolute priority. Our pilots undergo rigorous training programs, and our aircraft are maintained to the highest standards, exceeding regulatory requirements.</p>
+                
+                <p>We conduct comprehensive safety checks before every flight and continuously monitor weather conditions to ensure the safest possible journey for our passengers.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-12">
+        <h2 class="text-center mb-4">Our Destinations</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Destination</th>
+                        <th>Route Type</th>
+                        <th>Frequency</th>
+                        <th>Aircraft</th>
+                        <th>Journey Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Melbourne, Australia</td>
+                        <td>Prestige</td>
+                        <td>Weekly (Fri-Sun)</td>
+                        <td>SyberJet SJ30i</td>
+                        <td>Approx. 4 hours</td>
+                    </tr>
+                    <tr>
+                        <td>Rotorua</td>
+                        <td>Shuttle</td>
+                        <td>Twice daily (Mon-Fri)</td>
+                        <td>Cirrus SF50</td>
+                        <td>Approx. 1 hour</td>
+                    </tr>
+                    <tr>
+                        <td>Great Barrier Island</td>
+                        <td>Island</td>
+                        <td>Three times weekly</td>
+                        <td>Cirrus SF50</td>
+                        <td>Approx. 30 minutes</td>
+                    </tr>
+                    <tr>
+                        <td>Chatham Islands</td>
+                        <td>Island</td>
+                        <td>Twice weekly</td>
+                        <td>HondaJet Elite</td>
+                        <td>Approx. 2 hours</td>
+                    </tr>
+                    <tr>
+                        <td>Lake Tekapo</td>
+                        <td>Scenic</td>
+                        <td>Weekly (Mon-Tue)</td>
+                        <td>HondaJet Elite</td>
+                        <td>Approx. 2 hours</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% comment %} <div class="col-md-6">
+        
+    <img src="{% static 'images/map.gif' %}" class="img-fluid rounded" alt="Airport">
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Route Map</h4>
+        </div>
+    </div>
+</div>
+</div> {% endcomment %}
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Customer Service</h2>
+        <p>Our dedicated customer service team is available to assist with all your travel needs. Whether you have questions about your booking, need to make changes to your itinerary, or require special assistance, we're here to help.</p>
+        
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Contact Us</h5>
+                <p><strong>Phone:</strong> +64 9 123 4567</p>
+                <p><strong>Email:</strong> info@dairyflatairways.co.nz</p>
+                <p><strong>Hours:</strong> Monday-Friday, 9am-5pm</p>
+                <p><strong>Address:</strong> Dairy Flat Airport, North Shore, Auckland, New Zealand</p>
+            </div>
+        </div>
+    </div>
+    
+    
+
+<div class="col-md-6">
+    <div class="col-12 text-center">
+        <h2>Ready to Fly with Us?</h2>
+        <p class="lead">Experience the difference of boutique air travel with Dairy Flat Airways</p>
+        <a href="{% url 'flight_search' %}" class="btn btn-primary btn-lg mt-3">Book Your Flight Now</a>
+    </div>
+</div>
+{% endblock %}
