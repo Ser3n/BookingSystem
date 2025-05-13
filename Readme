@@ -6,50 +6,39 @@ A Django-based web application for managing flights, bookings, and customers for
 
 This application allows management of a fleet of private jets and provides functionality for customers to book flights between various destinations. The system tracks aircraft details, airport information, routes, flight schedules, and customer data.
 
-## Features
-
-- Aircraft fleet management
-- Airport database
-- Flight scheduling and route management
-- Customer registration and management
-- Booking system with automated pricing
-- User-friendly web interface
-
 ## Technologies
 
-- Python 3.x
-- Django 4.x
+- Python
+- Django
 - HTML/CSS
+- Bootstrap
 - JavaScript
-- SQLite (development) / PostgreSQL (production)
+- SQLite
 
 ## Installation
 
-1. Clone the repository
-   ```
-   git clone https://github.com/yourusername/airline-booking-system.git
-   cd airline-booking-system
-   ```
-
-2. Create and activate a virtual environment
+1. Create and activate a virtual environment
    ```
    python -m venv venv
    source venv/bin/activate  # On Windows, use: venv\Scripts\activate
    ```
 
-3. Install dependencies
+2. Install dependencies
    ```
    pip install -r requirements.txt
    ```
-
+3. Make migrations
+   ```
+   python manage.py makemigrations
+   ```
 4. Run migrations
    ```
    python manage.py migrate
    ```
 
-5. Create a superuser
+5. initialise data - This creates flight information to store in the database
    ```
-   python manage.py createsuperuser
+   python manage.py init_data
    ```
 
 6. Run the development server
@@ -71,12 +60,6 @@ The project is organized into the following main components:
 This project is currently in development. The following components have been implemented:
 - Database models for core functionality
 - Basic views started
+- Search functions
+- Bookings and cancellations.
 
-
-## Future Plans
-
-- User authentication and authorization
-- Booking management dashboard
-- RESTful API
-- Payment integration
-- Email notifications
