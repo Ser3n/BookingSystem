@@ -20,7 +20,7 @@ This application allows management of a fleet of private jets and provides funct
 1. Create and activate a virtual environment
    ```
    python -m venv venv
-   source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+   Windows: .venv\Scripts\activate
    ```
 
 2. Install dependencies

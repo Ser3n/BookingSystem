@@ -17,47 +17,47 @@ def hello(request):
 def homepage(request):
     return render(request, 'homepage.html', {'name': 'Zak'})
 
-def formjs(request):
-    return render(request, 'formjs.html', {})
+# def formjs(request):
+#     return render(request, 'formjs.html', {})
 
 # About us page view
 def about(request):
     return render(request, 'about.html')
-
-def bookings(request):
-    """
-    #Create a booking model instance
-    booking_flight = models.ForeignKey('Flight', on_delete=models.CASCADE)
-    booking_customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
-    booking_created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when booking was made")
-    booking_requests = models.CharField(max_length=100, help_text="Special requests or notes")
-    booking_status = models.CharField(max_length=50, default='Pending', help_text="Status of the booking (e.g., Confirmed, Cancelled)")
-    booking_date = models.DateField(default=timezone.now, help_text="Date of the flight")
-    """
-    b = Booking(
-         booking_flight = request.POST['booking_flight'],
-         booking_customer = request.POST['booking_customer'],
-         #booking_created_at = request.POST['booking_created_at'],
-         booking_requests = request.POST['booking_requestes'],
-         booking_status = request.POST['booking_status'],  
-         booking_date = request.POST['booking_date'])
-    #Save to the database
-    b.save()
-    #Return a Json response containing the details
-    return JsonResponse({
-            'booking_flight': request.POST['booking_flight'], 
-            'booking_customer': request.POST['booking_customer'], 
-            'booking_created_at': b.booking_created_at.isoformat(), 
-            'booking_requests': request.POST['booking_requests'],  
-            'booking_status': request.POST['booking_status'],
-            'booking_date': request.POST['booking_date'],
-            'status': 'success'
-    })
+#Dated and unused
+# def bookings(request):
+#     """
+#     #Create a booking model instance
+#     booking_flight = models.ForeignKey('Flight', on_delete=models.CASCADE)
+#     booking_customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+#     booking_created_at = models.DateTimeField(auto_now_add=True, help_text="Date and time when booking was made")
+#     booking_requests = models.CharField(max_length=100, help_text="Special requests or notes")
+#     booking_status = models.CharField(max_length=50, default='Pending', help_text="Status of the booking (e.g., Confirmed, Cancelled)")
+#     booking_date = models.DateField(default=timezone.now, help_text="Date of the flight")
+#     """
+#     b = Booking(
+#          booking_flight = request.POST['booking_flight'],
+#          booking_customer = request.POST['booking_customer'],
+#          #booking_created_at = request.POST['booking_created_at'],
+#          booking_requests = request.POST['booking_requestes'],
+#          booking_status = request.POST['booking_status'],  
+#          booking_date = request.POST['booking_date'])
+#     #Save to the database
+#     b.save()
+#     #Return a Json response containing the details
+#     return JsonResponse({
+#             'booking_flight': request.POST['booking_flight'], 
+#             'booking_customer': request.POST['booking_customer'], 
+#             'booking_created_at': b.booking_created_at.isoformat(), 
+#             'booking_requests': request.POST['booking_requests'],  
+#             'booking_status': request.POST['booking_status'],
+#             'booking_date': request.POST['booking_date'],
+#             'status': 'success'
+#     })
     
-    return render(request, 'booking_form.html', {})
+#     return render(request, 'booking_form.html', {})
 
-def aircraft(request):
-    return render(request, 'aircraft.html', {})
+# def aircraft(request):
+#     return render(request, 'aircraft.html', {})
 
 def flight_search(request):
     search_performed = False
@@ -230,6 +230,9 @@ def booking_cancel(request, booking_id):
     if booking.booking_status == 'Confirmed':
         booking.booking_status = 'Cancelled'
         booking.save()
+    # if booking.payment_status == 'C':
+    #     booking.delete()
+        
         messages.success(request, "Your booking has been cancelled.")
     else:
         messages.error(request, "This booking cannot be cancelled.")

@@ -128,7 +128,7 @@ class Booking(models.Model):
     booking_date = models.DateField(default=timezone.now, help_text="Date of the flight")
     
     def __str__(self):
-        return f"Booking #{self.booking_id}: {self.customer.first_name} on {self.flight.flight_number}"
+        return f"Booking #{self.booking_id}: {self.booking_customer.customer_first_name} on {self.flight.flight_number}"
     
 class Payment(models.Model):
     """

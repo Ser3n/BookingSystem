@@ -48,7 +48,7 @@
             <div class="card-header bg-info text-white">
                 <div class="d-flex justify-content-between align-items-center">
                     <h4 class="mb-0">Booking Reference: {{ booking.id }}</h4>
-                    <span class="badge bg-light text-dark">{{ booking.booking_status }}</span>
+                    <span class="badge {% if booking.booking_status == 'Confirmed' %}bg-success{% elif booking.booking_status == 'Cancelled' %}bg-danger{% else %}bg-warning{% endif %} text-white">{{ booking.booking_status }}</span>
                 </div>
             </div>
             <div class="card-body">
@@ -123,7 +123,14 @@
                 {% if booking.booking_status == 'Confirmed' %}
                     <div class="d-flex justify-content-between mt-4">
                         <a href="#" class="btn btn-outline-primary" onclick="window.print();">Print Confirmation</a>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel Booking</button>
+                        
+                        <!-- Simplified cancellation button that works -->
+                        <form method="post" action="{% url 'booking_cancel' booking_id=booking.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to cancel this booking? This action cannot be undone.')">
+                                Cancel Booking
+                            </button>
+                        </form>
                     </div>
                 {% elif booking.booking_status == 'Cancelled' %}
                     <div class="alert alert-warning mt-4">
@@ -131,35 +138,6 @@
                         <p>This booking has been cancelled. If you wish to book another flight, please visit our <a href="{% url 'flight_search' %}">flight search page</a>.</p>
                     </div>
                 {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Cancel Booking Modal -->
-<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="cancelModalLabel">Cancel Booking</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to cancel your booking?</p>
-                <p><strong>Cancellation Policy:</strong></p>
-                <ul>
-                    <li>Cancellations made more than 48 hours before departure may be eligible for a partial refund.</li>
-                    <li>Cancellations within 48 hours of departure are non-refundable.</li>
-                </ul>
-                
-                <p class="text-danger">This action cannot be undone.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep My Booking</button>
-                <form method="post" action="{% url 'booking_cancel' booking_id=booking.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Cancel Booking</button>
-                </form>
             </div>
         </div>
     </div>
